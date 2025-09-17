@@ -93,13 +93,13 @@ textarea { width: 100%; height: 100px; padding: 14px; font-size: 1em; border: 1p
 
 /* CORRECTED BUTTON STYLE */
 #generate-button { 
-    width: 100%; 
+    width: 70%; 
     font-size: 1.1em; 
     font-weight: 700; 
     background-color: var(--primary-color); /* Uses the correct brand color */
     padding: 15px; /* Added padding for better look */
 }
-#generate-button:hover { background-color: #004488; } /* Darker shade on hover */
+#generate-button:hover { background-color: ##59277d; } /* Darker shade on hover */
 
 /* --- Section 5: Key Results --- */
 .key-results {
@@ -131,5 +131,6 @@ textarea { width: 100%; height: 100px; padding: 14px; font-size: 1em; border: 1p
 /* --- Loading Spinner --- */
 #loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-color); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
 
 
