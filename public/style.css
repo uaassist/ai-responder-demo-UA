@@ -60,7 +60,7 @@ p { font-size: 1.1em; color: var(--text-light); }
 .feature-section { padding: 50px; }
 .feature-section h2, .feature-section .section-subtitle { text-align: center; }
 
-/* --- NEW: Strategic Benefits Section --- */
+/* --- Strategic Benefits Section --- */
 .strategic-benefits {
     display: flex;
     gap: 30px;
@@ -73,13 +73,8 @@ p { font-size: 1.1em; color: var(--text-light); }
     background-color: var(--background-color);
     border-radius: 12px;
 }
-.benefit-item h3 {
-    color: var(--primary-color);
-    font-size: 1.1em;
-}
-.benefit-item p {
-    font-size: 0.95em;
-}
+.benefit-item h3 { color: var(--primary-color); font-size: 1.1em; }
+.benefit-item p { font-size: 0.95em; }
 
 /* --- Process Section --- */
 .process-section { padding: 50px 0; }
@@ -111,3 +106,27 @@ textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 
 .final-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(108, 48, 156, 0.4); background-color: #59277d; }
 #loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary-color); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+
+/* --- NEW: Mobile Responsive Styles --- */
+@media (max-width: 768px) {
+    body { padding: 0; }
+    .landing-container { padding: 20px 15px; }
+
+    h1 { font-size: 2.2em; }
+    h2 { font-size: 1.8em; }
+
+    .card, .feature-section, .cta-footer {
+        padding: 25px;
+    }
+
+    /* This is the key fix for the multi-column sections */
+    .strategic-benefits, .key-results {
+        flex-direction: column; /* Stack the columns vertically */
+        gap: 20px; /* Adjust the gap for a vertical layout */
+    }
+    
+    .benefit-item {
+        margin-bottom: 10px;
+    }
+}
