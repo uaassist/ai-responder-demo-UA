@@ -2,8 +2,8 @@
 
 :root {
     /* MEDIKOM Branding */
-    --primary-color: #0055A5; /* A strong, professional blue */
-    --secondary-color: #4DB153; /* A positive green for CTAs */
+    --primary-color: #0055A5; /* A professional blue often used in healthcare */
+    --secondary-color: #4DB153; /* A friendly green accent */
     --background-color: #F9FAFB;
     --card-background-color: #FFFFFF;
     --text-dark: #1D2B3A;
@@ -90,8 +90,16 @@ p { font-size: 1.1em; color: var(--text-light); }
 .demo-step { margin-bottom: 30px; }
 textarea { width: 100%; height: 100px; padding: 14px; font-size: 1em; border: 1px solid var(--border-color); border-radius: 8px; box-sizing: border-box; resize: vertical; font-family: 'Inter', sans-serif; }
 #draft-output { height: 150px; background-color: #f9fafb; }
-#generate-button { width: 100%; font-size: 1.1em; font-weight: 700; background-color: var(--primary-color); }
-#generate-button:hover { background-color: #004488; }
+
+/* CORRECTED BUTTON STYLE */
+#generate-button { 
+    width: 100%; 
+    font-size: 1.1em; 
+    font-weight: 700; 
+    background-color: var(--primary-color); /* Uses the correct brand color */
+    padding: 15px; /* Added padding for better look */
+}
+#generate-button:hover { background-color: #004488; } /* Darker shade on hover */
 
 /* --- Section 5: Key Results --- */
 .key-results {
