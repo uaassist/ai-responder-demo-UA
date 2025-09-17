@@ -40,9 +40,11 @@ function buildSystemPrompt(context, review) {
 
 exports.handler = async function (event) {
   if (event.httpMethod !== 'POST') { return { statusCode: 405, body: 'Method Not Allowed' }; }
+  
   const { reviewText } = JSON.parse(event.body);
   const businessContext = getBusinessContext();
   const systemPrompt = buildSystemPrompt(businessContext, reviewText);
+  
   try {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -53,12 +55,19 @@ exports.handler = async function (event) {
         temperature: 0.7,
       }),
     });
-    if (!response.ok) { const errorData = await response.json(); throw new Error(JSON.stringify(errorData)); }
+    if (!response.ok) { 
+        const errorData = await response.json(); 
+        console.error("OpenAI API Error:", errorData);
+        throw new Error('OpenAI API request failed.');
+    }
     const data = await response.json();
     const aiReply = data.choices[0].message.content;
     return { statusCode: 200, body: JSON.stringify({ draftReply: aiReply }), };
   } catch (error) {
-    console.error("Error calling OpenAI API:", error);
-    return { statusCode: 500, body: JSON.stringify({ error: "AI service is currently unavailable." }) };
+    console.error("Error in function execution:", error);
+    return { 
+        statusCode: 500, 
+        body: JSON.stringify({ error: "AI service is currently unavailable.", details: error.message }) 
+    };
   }
 };
