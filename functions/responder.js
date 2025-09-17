@@ -1,11 +1,9 @@
 const fetch = require('node-fetch');
 
-// This function simulates fetching the unique business context for a Ukrainian client.
 function getBusinessContext() {
     return {
         businessName: "MEDIKOM на Оболонській набережній",
         responderName: "Олена",
-        responseTone: "Теплий, дружній та щирий",
         styleGuideExamples: [
             "Дякуємо вам за довіру та такий теплий відгук! Раді, що консультація у лікаря-отоларинголога Віктора Петровича Товстолита була для вас корисною та допомогла розібратись у ситуації. Бажаємо вам міцного здоров’я!",
             "Добрий день, пані Лідіє! Щиро дякуємо за Ваш відгук та високу оцінку стаціонара на Оболонській набережній. Нам дуже приємно знати, що Ви залишилися задоволені візитом.Бажаємо Вам міцного здоров’я та гарного настрою! Завжди раді бачити Вас у MEDIKOM на Оболонській набережній.",
@@ -16,35 +14,49 @@ function getBusinessContext() {
     };
 }
 
-// This function builds the final, definitive Ukrainian prompt
 function buildSystemPrompt(context, review) {
     const formattedExamples = context.styleGuideExamples.map(ex => `- "${ex}"`).join('\n');
     const formattedAvoidWords = context.avoidWords.join(', ');
 
-    return `Згенеруй одну, коротку та людяну відповідь, виступаючи як ${context.responderName} з ${context.businessName}, на наданий відгук клієнта, суворо дотримуючись наступної послідовності правил:
+    return `You are a sophisticated AI assistant helping "${context.responderName}" from "${context.businessName}" draft a reply to a customer review in Ukrainian.
 
-    1) **АНАЛІЗ ІМЕНІ:** Спочатку проаналізуй ім'я автора відгуку. **ЯКЩО** це справжнє людське ім'я (наприклад, "Олена", "Володимир Петренко"), твоє привітання **ОБОВ'ЯЗКОВО** повинно починатися **лише з першого імені** у кличному відмінку. **В УСІХ ІНШИХ ВИПАДКАХ** — якщо це нікнейм або ім'я не вказано — ти **ПОВИНЕН** використовувати загальне, ввічливе та різноманітне привітання.
+    **Your Task:**
+    Your goal is to generate a short, sincere, and human-sounding reply. To do this, you will first analyze the review and then draft a reply based on that analysis. You MUST respond with a valid JSON object containing your analysis and the final draft.
 
-    2) **АНАЛІЗ ВІДГУКУ ТА ВИБІР ГОЛОВНОЇ ДУМКИ (НАЙВАЖЛИВІШИЙ КРОК):** Прочитай відгук і визнач усі позитивні моменти. Потім, ти **ОБОВ'ЯЗКОВО** повинен обрати **лише ОДНУ** головну думку для своєї відповіді, використовуючи цей суворий порядок пріоритетів:
-        *   **Пріоритет 1 (Найвищий):** Специфічні, емоційні коментарі про те, як сервіс вплинув на пацієнта або його родину (особливо дітей).
-        *   **Пріоритет 2:** Похвала конкретній людині (лікарю, медсестрі).
-        *   **Пріоритет 3:** Коментарі про конкретну частину сервісу (якість лікування, процес страхування).
-        *   **Пріоритет 4 (Найнижчий):** Загальні коментарі про клініку (чистота, швидкість, розташування).
+    **JSON Output Structure:**
+    {
+      "analysis": {
+        "sentiment": "Positive, Negative, or Mixed",
+        "all_points": ["A list of all key points mentioned in the review, in Ukrainian."],
+        "main_point_selection": "Explain in Ukrainian which point you chose as the main theme and WHY you chose it based on the selection criteria."
+      },
+      "draft": "The final, human-sounding reply text, in Ukrainian."
+    }
 
-    3) **СКЛАДАННЯ ВІДПОВІДІ:** Твоя відповідь **ПОВИННА** бути побудована **лише навколо головної думки**, яку ти обрав на кроці 2. Не перераховуй інші моменти.
+    **Your Thought Process & Rules:**
 
-    4) **ТОН І СТИЛЬ:** Твій тон і стиль **ПОВИННІ** ідеально відповідати неформальному, дружньому стилю наданих прикладів. Ти **ПОВИНЕН** уникати роботизованих слів та фраз зі списку "Слова, яких слід уникати".
-        *   **Приклади Стилю:** ${formattedExamples}
-        *   **Слова, яких слід уникати:** ${formattedAvoidWords}
+    **Part 1: The "analysis" object**
+    1.  **sentiment:** Determine the overall sentiment.
+    2.  **all_points:** List every distinct positive or negative point made by the customer.
+    3.  **main_point_selection:** This is the most critical step. From your list of points, you MUST select the SINGLE best point to be the theme of the reply, using this strict priority order:
+        -   **Priority 1 (Highest):** Specific, emotional comments about how the service made the patient or their family (especially children) feel.
+        -   **Priority 2:** Praise for a specific person (a named doctor or "the nurse").
+        -   **Priority 3:** Comments about a specific, tangible part of the service (quality of tests, insurance process).
+        -   **Priority 4 (Lowest):** General comments about the facility (clean, fast).
+        You MUST briefly state your reasoning in Ukrainian.
 
-    5) **СТРАТЕГІЯ ДЛЯ РІЗНИХ ВІДГУКІВ:**
-        *   **Для змішаних відгуків:** Твоя відповідь **ОБОВ'ЯЗКОВО** повинна мати 3-частинну структуру: a) вибачення за негатив; b) пропозиція рішення: "${context.serviceRecoveryOffer}"; c) подяка за позитив.
-        *   **Для суто негативних відгуків:** Вибачся і запропонуй рішення: "${context.serviceRecoveryOffer}".
+    **Part 2: The "draft" object**
+    1.  **Focus:** Your draft must be built ONLY around the "main_point" you selected in your analysis. Do NOT list other points.
+    2.  **Style:** The tone must be friendly and match the style of the provided examples. You MUST avoid the words from the "avoid words" list.
+    3.  **Sign-off:** You MUST sign off with: "- ${context.responderName}".
 
-    6) **ПІДПИС:** Ти **ОБОВ'ЯЗКОВО** повинен підписатися просто "- ${context.responderName}".
-    
-    **Відгук клієнта для відповіді:**
-    "${review}"`;
+    **Context for the Task:**
+    *   **Style Guide Examples:** ${formattedExamples}
+    *   **Words to Avoid:** ${formattedAvoidWords}
+    *   **Service Recovery Offer:** ${context.serviceRecoveryOffer}
+    *   **Customer's Review to Analyze:** "${review}"
+
+    Now, generate the complete JSON object.`;
 }
 
 exports.handler = async function (event) {
@@ -64,6 +76,7 @@ exports.handler = async function (event) {
         model: 'gpt-4-turbo',
         messages: [ { role: 'user', content: systemPrompt } ],
         temperature: 0.7,
+        response_format: { type: "json_object" }, // Force the AI to output JSON
       }),
     });
     if (!response.ok) { 
@@ -72,7 +85,16 @@ exports.handler = async function (event) {
         throw new Error('OpenAI API request failed.');
     }
     const data = await response.json();
-    const aiReply = data.choices[0].message.content;
+    
+    // Parse the JSON string from the AI
+    const aiJsonResponse = JSON.parse(data.choices[0].message.content);
+    
+    // FOR DEBUGGING: Log the AI's "thought process"
+    console.log("AI Full Analysis:", JSON.stringify(aiJsonResponse.analysis, null, 2));
+    
+    // Extract just the draft to send back to the frontend
+    const aiReply = aiJsonResponse.draft;
+
     return { statusCode: 200, body: JSON.stringify({ draftReply: aiReply }), };
   } catch (error) {
     console.error("Error in function execution:", error);
