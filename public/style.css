@@ -129,4 +129,13 @@ textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 
     .benefit-item {
         margin-bottom: 10px;
     }
+/* --- NEW: Footer Branding Style --- */
+.footer-branding {
+    margin-top: 40px; /* Add some space above */
+    font-size: 0.9em;
+    color: #aaa; /* A subtle, professional grey */
+}
+
+.footer-branding strong {
+    color: #fff; /* Make the brand name stand out */
 }
