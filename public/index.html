@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>AI Асистент для Відповідей - Демо</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-container">
+        <header>
+            <h1>AI Асистент для Відповідей</h1>
+            <p>Миттєво створюйте професійні, брендові відповіді на ваші відгуки в Google.</p>
+        </header>
+        <div class="card">
+            <h2>1. Вставте відгук клієнта</h2>
+            <p>Введіть будь-який відгук з вашого Google Business Profile нижче.</p>
+            <textarea id="review-input" placeholder="Наприклад: “Був чудовий візит. Персонал дуже привітний...”"></textarea>
+        </div>
+        <div class="card">
+            <h2>2. Згенеруйте чернетку</h2>
+            <p>Наш AI проаналізує відгук і створить персоналізовану відповідь на основі тону вашого бренду.</p>
+            <button id="generate-button">✨ Створити відповідь з AI</button>
+        </div>
+        <div class="card result-card" id="result-container" style="display: none;">
+            <h2>3. Ваша AI-чернетка</h2>
+            <p>Ви можете відредагувати текст нижче перед публікацією.</p>
+            <div id="loading-spinner" style="display: none;"></div>
+            <textarea id="draft-output"></textarea>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
