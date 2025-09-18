@@ -104,6 +104,7 @@ exports.handler = async function (event) {
 
     return { statusCode: 200, body: JSON.stringify({ draftReply: aiReply }), };
   } catch (error) 
+      
   {
     console.error("Error in function execution:", error);
     return { 
@@ -112,4 +113,5 @@ exports.handler = async function (event) {
     };
   }
 };
+
 
