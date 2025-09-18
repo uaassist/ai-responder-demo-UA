@@ -57,7 +57,7 @@ function buildSystemPrompt(context, review) {
 }
 
 exports.handler = async function (event) {
-    // ... The rest of this file is unchanged ...
+
 };
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
@@ -100,4 +100,5 @@ exports.handler = async function (event) {
     };
   }
 };
+
 
