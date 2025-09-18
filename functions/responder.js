@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 
+// This function simulates fetching the unique business context for a Ukrainian client.
 function getBusinessContext() {
     return {
         businessName: "MEDIKOM на Оболонській набережній",
@@ -7,14 +8,14 @@ function getBusinessContext() {
         styleGuideExamples: [
             "Дякуємо вам за довіру та такий теплий відгук! Раді, що консультація у лікаря-отоларинголога Віктора Петровича Товстолита була для вас корисною та допомогла розібратись у ситуації. Бажаємо вам міцного здоров’я!",
             "Добрий день, пані Лідіє! Щиро дякуємо за Ваш відгук та високу оцінку стаціонара на Оболонській набережній. Нам дуже приємно знати, що Ви залишилися задоволені візитом.Бажаємо Вам міцного здоров’я та гарного настрою! Завжди раді бачити Вас у MEDIKOM на Оболонській набережній.",
-            "Владиславе, дякуємо вам за довіру і зворотній зв'язок! Костянтин Едуардович - наш провідний фахівець в оперативній урології. Пишаємось своєю командою і радіємо, коли можемо допомогти нашим пацієнтам!"
+            "Владиславе, дякуємо вам за довіру і зворотній зв'язок! Костянтин Едуардович - наш провідний фахівець в оперативній урології. Пишаємось своєю командою і радіємо, коли можемо допомогти нашим пацієєнтам!"
         ],
         avoidWords: ["ми в захваті", "дякуємо, що знайшли час", "Це чудово", "Це велике задоволення"],
         serviceRecoveryOffer: "Вашою скаргою займається Заступник медичного директора з якості."
     };
 }
 
-// --- THIS FUNCTION CONTAINS THE UPDATED PROMPT ---
+// This function builds the final, definitive Ukrainian prompt
 function buildSystemPrompt(context, review) {
     const formattedExamples = context.styleGuideExamples.map(ex => `- "${ex}"`).join('\n');
     const formattedAvoidWords = context.avoidWords.join(', ');
@@ -49,14 +50,14 @@ function buildSystemPrompt(context, review) {
     **Part 2: The "draft" object (Your Response Strategy)**
     *   **For Positive Reviews:** Thank the customer and build the reply ONLY around the single "main_point" you selected.
     *   **For Negative Reviews:**
-        1.  Start with a sincere and empathetic apology. Acknowledge their frustration.
-        2.  Briefly mention the specific negative "main_point" to show you have read their feedback carefully.
+        1.  Start with a sincere and empathetic apology.
+        2.  Briefly mention the specific negative "main_point".
         3.  Proactively offer to make things right by stating: "${context.serviceRecoveryOffer}".
         4.  Provide a clear way to take the conversation offline.
-    *   **For Mixed Reviews (Follow this 3-part structure exactly):**
-        1.  **Apologize First:** Start with a sincere apology that acknowledges their specific negative point and validates their feelings (e.g., "We understand how frustrating that must have been.").
-        2.  **Offer Recovery:** Immediately and proactively offer the solution: "${context.serviceRecoveryOffer}".
-        3.  **Acknowledge Positive Last:** After addressing the negative, use a smooth transition ("Разом з тим," or "Водночас,") and briefly thank them for their positive feedback on the other point.
+    *   **For Mixed Reviews (Follow this 3-step checklist EXACTLY):**
+        1.  **APOLOGIZE:** Start with a sincere apology that acknowledges their specific negative point and validates their feelings (e.g., "We understand how frustrating that must have been.").
+        2.  **RECOVER:** Immediately and proactively offer the solution: "${context.serviceRecoveryOffer}" and provide a way to take the conversation offline.
+        3.  **APPRECIATE:** As the final part of your message, you MUST thank them for their positive feedback, especially if they mentioned loyalty. Use a transition like "Водночас," or "Разом з тим,".
     
     **General Rules for the Draft:**
     -   **Style:** The tone must be friendly and match the provided examples. You MUST avoid the words from the "avoid words" list.
