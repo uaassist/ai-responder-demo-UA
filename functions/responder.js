@@ -14,21 +14,22 @@ function getBusinessContext() {
     };
 }
 
+// --- THIS FUNCTION CONTAINS THE UPDATED PROMPT ---
 function buildSystemPrompt(context, review) {
     const formattedExamples = context.styleGuideExamples.map(ex => `- "${ex}"`).join('\n');
     const formattedAvoidWords = context.avoidWords.join(', ');
 
-    return `You are a sophisticated AI assistant helping "${context.responderName}" from "${context.businessName}" draft a reply to a customer review in Ukrainian.
+    return `You are a sophisticated AI assistant helping "${context.responderName}" from "${context.businessName}" draft a professional, empathetic, and brand-aligned reply to a customer review in Ukrainian.
 
     **Your Task:**
-    Your goal is to generate a short, sincere, and human-sounding reply. To do this, you will first analyze the review and then draft a reply based on that analysis. You MUST respond with a valid JSON object containing your analysis and the final draft.
+    You MUST respond with a valid JSON object containing your analysis and the final draft.
 
     **JSON Output Structure:**
     {
       "analysis": {
         "sentiment": "Positive, Negative, or Mixed",
-        "all_points": ["A list of all key points mentioned in the review, in Ukrainian."],
-        "main_point_selection": "Explain in Ukrainian which point you chose as the main theme and WHY you chose it based on the selection criteria."
+        "all_points": ["A list of all key points from the review, in Ukrainian."],
+        "main_point_selection": "Explain in Ukrainian which point you chose as the main theme and WHY."
       },
       "draft": "The final, human-sounding reply text, in Ukrainian."
     }
@@ -37,18 +38,29 @@ function buildSystemPrompt(context, review) {
 
     **Part 1: The "analysis" object**
     1.  **sentiment:** Determine the overall sentiment.
-    2.  **all_points:** List every distinct positive or negative point made by the customer.
-    3.  **main_point_selection:** This is the most critical step. From your list of points, you MUST select the SINGLE best point to be the theme of the reply, using this strict priority order:
-        -   **Priority 1 (Highest):** Specific, emotional comments about how the service made the patient or their family (especially children) feel.
-        -   **Priority 2:** Praise for a specific person (a named doctor or "the nurse").
-        -   **Priority 3:** Comments about a specific, tangible part of the service (quality of tests, insurance process).
-        -   **Priority 4 (Lowest):** General comments about the facility (clean, fast).
+    2.  **all_points:** List every distinct point made by the customer.
+    3.  **main_point_selection:** Select the SINGLE best point to be the theme of the reply, using this strict priority order:
+        -   **Priority 1 (Highest):** Specific, emotional comments about how the service made the patient or their family feel.
+        -   **Priority 2:** Praise or criticism for a specific person.
+        -   **Priority 3:** Comments about a specific part of the service.
+        -   **Priority 4 (Lowest):** General comments about the facility.
         You MUST briefly state your reasoning in Ukrainian.
 
-    **Part 2: The "draft" object**
-    1.  **Focus:** Your draft must be built ONLY around the "main_point" you selected in your analysis. Do NOT list other points.
-    2.  **Style:** The tone must be friendly and match the style of the provided examples. You MUST avoid the words from the "avoid words" list.
-    3.  **Sign-off:** You MUST sign off with: "- ${context.responderName}".
+    **Part 2: The "draft" object (Your Response Strategy)**
+    *   **For Positive Reviews:** Thank the customer and build the reply ONLY around the single "main_point" you selected.
+    *   **For Negative Reviews:**
+        1.  Start with a sincere and empathetic apology. Acknowledge their frustration.
+        2.  Briefly mention the specific negative "main_point" to show you have read their feedback carefully.
+        3.  Proactively offer to make things right by stating: "${context.serviceRecoveryOffer}".
+        4.  Provide a clear way to take the conversation offline.
+    *   **For Mixed Reviews (Follow this 3-part structure exactly):**
+        1.  **Apologize First:** Start with a sincere apology that acknowledges their specific negative point and validates their feelings (e.g., "We understand how frustrating that must have been.").
+        2.  **Offer Recovery:** Immediately and proactively offer the solution: "${context.serviceRecoveryOffer}".
+        3.  **Acknowledge Positive Last:** After addressing the negative, use a smooth transition ("Разом з тим," or "Водночас,") and briefly thank them for their positive feedback on the other point.
+    
+    **General Rules for the Draft:**
+    -   **Style:** The tone must be friendly and match the provided examples. You MUST avoid the words from the "avoid words" list.
+    -   **Sign-off:** You MUST sign off with: "- ${context.responderName}".
 
     **Context for the Task:**
     *   **Style Guide Examples:** ${formattedExamples}
@@ -76,7 +88,7 @@ exports.handler = async function (event) {
         model: 'gpt-4-turbo',
         messages: [ { role: 'user', content: systemPrompt } ],
         temperature: 0.7,
-        response_format: { type: "json_object" }, // Force the AI to output JSON
+        response_format: { type: "json_object" },
       }),
     });
     if (!response.ok) { 
@@ -86,13 +98,10 @@ exports.handler = async function (event) {
     }
     const data = await response.json();
     
-    // Parse the JSON string from the AI
     const aiJsonResponse = JSON.parse(data.choices[0].message.content);
     
-    // FOR DEBUGGING: Log the AI's "thought process"
     console.log("AI Full Analysis:", JSON.stringify(aiJsonResponse.analysis, null, 2));
     
-    // Extract just the draft to send back to the frontend
     const aiReply = aiJsonResponse.draft;
 
     return { statusCode: 200, body: JSON.stringify({ draftReply: aiReply }), };
