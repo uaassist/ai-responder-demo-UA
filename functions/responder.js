@@ -1,6 +1,5 @@
 const fetch = require('node-fetch');
 
-// This function simulates fetching the unique business context for a Ukrainian client.
 function getBusinessContext() {
     return {
         businessName: "MEDIKOM на Оболонській набережній",
@@ -10,12 +9,13 @@ function getBusinessContext() {
             "Добрий день, пані Лідіє! Щиро дякуємо за Ваш відгук та високу оцінку стаціонара на Оболонській набережній. Нам дуже приємно знати, що Ви залишилися задоволені візитом.Бажаємо Вам міцного здоров’я та гарного настрою! Завжди раді бачити Вас у MEDIKOM на Оболонській набережній.",
             "Владиславе, дякуємо вам за довіру і зворотній зв'язок! Костянтин Едуардович - наш провідний фахівець в оперативній урології. Пишаємось своєю командою і радіємо, коли можемо допомогти нашим пацієнтам!"
         ],
-        avoidWords: ["ми в захваті", "дякуємо, що знайшли час", "Це чудово", "Це велике задоволення"],
+        avoidWords: ["ми в захваті", "дякуємо, що знайшли час", "Це чудово", "Це велике задоволення", "Ваше визнання"],
+
         serviceRecoveryOffer: "Вашою скаргою займається Заступник медичного директора з якості."
     };
 }
 
-// This function builds the final, definitive Ukrainian prompt
+// --- THIS FUNCTION CONTAINS THE FINAL, CORRECTED PROMPT ---
 function buildSystemPrompt(context, review) {
     const formattedExamples = context.styleGuideExamples.map(ex => `- "${ex}"`).join('\n');
     const formattedAvoidWords = context.avoidWords.join(', ');
@@ -38,22 +38,21 @@ function buildSystemPrompt(context, review) {
     **Your Thought Process & Rules:**
 
     **Part 1: The "analysis" object**
-    1.  **all_points:** First, list every distinct positive and negative point made by the customer.
-    2.  **sentiment:** This is a critical step. After listing all points, you MUST determine the sentiment based on a strict rule: **IF** your list of "all_points" contains at least one positive point AND at least one negative point, you MUST classify the sentiment as "Mixed". Otherwise, classify it as "Positive" or "Negative".
-    3.  **main_point_selection:** Select the SINGLE best positive or negative point to be the theme of the reply, using this strict priority order:
-        -   Priority 1 (Highest): Specific, emotional comments.
+    1.  **sentiment:** Determine the overall sentiment.
+    2.  **all_points:** List every distinct point made by the customer.
+    3.  **main_point_selection:** Select the SINGLE best point to be the theme of the reply, using this strict priority order:
+        -   Priority 1 (Highest): Specific, emotional comments about the service.
         -   Priority 2: Praise or criticism for a specific person.
-        -   Priority 3: Comments about a specific part of the service.
+        -   Priority 3: General comments about the service.
         -   Priority 4 (Lowest): General comments about the facility.
         You MUST briefly state your reasoning in Ukrainian.
 
     **Part 2: The "draft" object (Your Response Strategy)**
     *   **For Positive Reviews:** Thank the customer and build the reply ONLY around the single "main_point" you selected.
-    *   **For Negative Reviews:** Start with an apology, acknowledge the negative "main_point", and proactively offer the solution: "${context.serviceRecoveryOffer}".
-    *   **For Mixed Reviews (Follow this 3-step checklist EXACTLY):**
-        1.  **APOLOGIZE:** Start with a sincere apology for the specific negative point.
-        2.  **RECOVER:** Immediately offer the solution: "${context.serviceRecoveryOffer}".
-        3.  **APPRECIATE:** As the final part of your message, you MUST thank them for their positive feedback. Use a transition like "Водночас,".
+    *   **For Negative Reviews & Mixed Reviews (Follow this checklist EXACTLY):**
+        1.  **APOLOGIZE:** Start with a sincere apology that acknowledges the specific negative point and validates their feelings.
+        2.  **STATE ACTION:** Immediately state the internal action being taken: "${context.serviceRecoveryOffer}". This shows you are taking the feedback seriously. After this statement, you can add a general and polite closing, inviting further discussion without making promises you can't keep. A good phrase would be "Ми прагнемо стати кращими для вас" (We strive to be better for you).
+        3.  **APPRECIATE (For Mixed Reviews Only):** If the review is mixed, you MUST thank them for their positive feedback as the final part of your message. Use a transition like "Водночас,".
     
     **General Rules for the Draft:**
     -   **Style:** The tone must be friendly and match the provided examples. You MUST avoid the words from the "avoid words" list.
@@ -110,3 +109,4 @@ exports.handler = async function (event) {
     };
   }
 };
+
