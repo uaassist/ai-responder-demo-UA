@@ -69,5 +69,44 @@ function buildSystemPrompt(context, review, authorName) {
 }
 
 exports.handler = async function (event) {
-    // ... (This function is unchanged and correct)
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method Not Allowed' };
+  }
+  
+  const { reviewText, authorName } = JSON.parse(event.body);
+  const businessContext = getBusinessContext();
+  const systemPrompt = buildSystemPrompt(businessContext, reviewText, authorName);
+  
+  try {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`, },
+      body: JSON.stringify({
+        model: 'gpt-4-turbo',
+        messages: [ { role: 'user', content: systemPrompt } ],
+        temperature: 0.7,
+        response_format: { type: "json_object" },
+      }),
+    });
+    if (!response.ok) { 
+        const errorData = await response.json(); 
+        console.error("OpenAI API Error:", errorData);
+        throw new Error('OpenAI API request failed.');
+    }
+    const data = await response.json();
+    
+    const aiJsonResponse = JSON.parse(data.choices[0].message.content);
+    
+    console.log("AI Full Analysis:", JSON.stringify(aiJsonResponse.analysis, null, 2));
+    
+    const aiReply = aiJsonResponse.draft;
+
+    return { statusCode: 200, body: JSON.stringify({ draftReply: aiReply }), };
+  } catch (error) {
+    console.error("Error in function execution:", error);
+    return { 
+        statusCode: 500, 
+        body: JSON.stringify({ error: "AI service is currently unavailable.", details: error.message }) 
+    };
+  }
 };
