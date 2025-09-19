@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-// This function simulates fetching the unique business context.
+// This function simulates fetching the unique business context for a Ukrainian client.
 function getBusinessContext() {
     return {
         businessName: "MEDIKOM на Оболонській набережній",
@@ -90,13 +90,13 @@ exports.handler = async function (event) {
   const businessContext = getBusinessContext();
   
   try {
-    // --- STEP 1: RUN THE ANALYSIS PROMPT ---
+    // --- STEP 1: RUN THE ANALYSIS PROMPT (WITH A FASTER MODEL) ---
     const analysisPrompt = buildAnalysisPrompt(reviewText, authorName);
     const analysisResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`, },
       body: JSON.stringify({
-        model: 'gpt-4-turbo',
+        model: 'gpt-3.5-turbo', // Use the faster model for analysis
         messages: [ { role: 'user', content: analysisPrompt } ],
         temperature: 0.2, // Low temperature for accurate analysis
         response_format: { type: "json_object" },
@@ -108,13 +108,13 @@ exports.handler = async function (event) {
     
     console.log("AI Full Analysis:", JSON.stringify(analysis, null, 2));
 
-    // --- STEP 2: RUN THE DRAFTING PROMPT ---
+    // --- STEP 2: RUN THE DRAFTING PROMPT (WITH THE HIGH-QUALITY MODEL) ---
     const draftingPrompt = buildDraftingPrompt(businessContext, analysis);
     const draftingResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`, },
       body: JSON.stringify({
-        model: 'gpt-4-turbo',
+        model: 'gpt-4-turbo', // Use the high-quality model for writing
         messages: [ { role: 'user', content: draftingPrompt } ],
         temperature: 0.8, // Higher temperature for creative, human-like writing
       }),
