@@ -12,12 +12,12 @@ function getBusinessContext() {
         ],
         avoidWords: ["ми в захваті", "дякуємо, що знайшли час", "Це чудово", "Це велике задоволення"],
         serviceRecoveryOffer: "Вашою скаргою займається Заступник медичного директора з якості.",
-        // NEW: Add a specific contact instruction for the business
-        offlineContactInstruction: "Проте нам необхідні подробиці, щоб якісно виправитись. Будь ласка, зв'яжіться з нами за телефоном: +38 (044) 503-77-77  або електронною поштою: feedbeack@medikom.ua"
+        // This is the safe, professional contact instruction for Google Maps reviews
+        offlineContactInstruction: "Проте нам необхідні подробиці, щоб якісно виправитись. Будь ласка, зв'яжіться з нами за телефоном: +38 (044) 503-77-77 або електронною поштою: feedback@medikom.ua"
     };
 }
 
-// --- THIS FUNCTION CONTAINS THE FINAL, CORRECTED PROMPT ---
+// This function builds the final, definitive Ukrainian prompt
 function buildSystemPrompt(context, review, authorName) {
     const formattedExamples = context.styleGuideExamples.map(ex => `- "${ex}"`).join('\n');
     const formattedAvoidWords = context.avoidWords.join(', ');
@@ -28,17 +28,25 @@ function buildSystemPrompt(context, review, authorName) {
     You MUST respond with a valid JSON object containing your analysis and the final draft.
 
     **JSON Output Structure:**
-    // ... (This section is unchanged)
+    {
+      "analysis": {
+        "name_analysis": "Explain your decision for the greeting. Did you use the name? If so, why? If not, why not? State the name you will use.",
+        "sentiment": "Positive, Negative, or Mixed",
+        "all_points": ["A list of all key points from the review, in Ukrainian."],
+        "main_point_selection": "Explain in Ukrainian which point you chose as the main theme and WHY."
+      },
+      "draft": "The final, human-sounding reply text, in Ukrainian."
+    }
 
     **Your Thought Process & Rules (Follow in this exact order):**
 
     **Part 1: The "analysis" object**
-    1.  **name_analysis:** Analyze the author's name: "${authorName}". IF it is a real human name, state that you will use only the first name in the vocative case. IN ALL OTHER CASES, state that you will use a generic greeting.
+    1.  **name_analysis:** Analyze the author's name: "${authorName}". IF it is a real human name (e.g., "Олена", "Володимир Петренко"), state that you will use only the first name in the vocative case. IN ALL OTHER CASES (if it is a nickname like "SuperCat1998", contains numbers, or is blank), state that it is not a real name and you will use a generic, polite greeting.
     2.  **all_points & sentiment:** List all distinct points and then classify the sentiment as "Mixed" if both positive and negative points are present.
-    3.  **main_point_selection:** Select the SINGLE best point to be the theme of the reply, using the strict priority order.
+    3.  **main_point_selection:** Select the SINGLE best point to be the theme of the reply, using the strict priority order (Emotional comments > Specific people > Specific services > General comments). You MUST briefly state your reasoning in Ukrainian.
 
     **Part 2: The "draft" object (Your Response Strategy)**
-    *   **For Positive Reviews:** ...
+    *   **For Positive Reviews:** Thank the customer and build the reply ONLY around the "main_point" you selected.
     *   **For Negative Reviews & Mixed Reviews (Follow this checklist EXACTLY):**
         1.  **APOLOGIZE:** Start with a sincere apology that acknowledges the specific negative point.
         2.  **STATE ACTION:** Immediately state the internal action being taken: "${context.serviceRecoveryOffer}".
@@ -46,20 +54,57 @@ function buildSystemPrompt(context, review, authorName) {
         4.  **APPRECIATE (For Mixed Reviews Only):** If the review is mixed, you MUST thank them for their positive feedback as the final part of your message.
     
     **General Rules for the Draft:**
-    // ... (The rest of the rules are unchanged)
+    -   **Style:** The tone must be friendly and match the provided examples. You MUST avoid the words from the "avoid words" list.
+    -   **Sign-off:** You MUST sign off with: "- ${context.responderName}".
 
     **Context for the Task:**
-    // ... (The rest of the context is unchanged)
+    *   **Style Guide Examples:** ${formattedExamples}
+    *   **Words to Avoid:** ${formattedAvoidWords}
+    *   **Service Recovery Offer:** ${context.serviceRecoveryOffer}
     *   **Customer's Review to Analyze:** "${review}"
 
     Now, generate the complete JSON object.`;
 }
 
 exports.handler = async function (event) {
-  // The handler no longer needs isKnownCustomer
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method Not Allowed' };
+  }
+  
   const { reviewText, authorName } = JSON.parse(event.body);
   const businessContext = getBusinessContext();
   const systemPrompt = buildSystemPrompt(businessContext, reviewText, authorName);
   
-  // ... (The rest of the function is unchanged)
+  try {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`, },
+      body: JSON.stringify({
+        model: 'gpt-4-turbo',
+        messages: [ { role: 'user', content: systemPrompt } ],
+        temperature: 0.7,
+        response_format: { type: "json_object" },
+      }),
+    });
+    if (!response.ok) { 
+        const errorData = await response.json(); 
+        console.error("OpenAI API Error:", errorData);
+        throw new Error('OpenAI API request failed.');
+    }
+    const data = await response.json();
+    
+    const aiJsonResponse = JSON.parse(data.choices[0].message.content);
+    
+    console.log("AI Full Analysis:", JSON.stringify(aiJsonResponse.analysis, null, 2));
+    
+    const aiReply = aiJsonResponse.draft;
+
+    return { statusCode: 200, body: JSON.stringify({ draftReply: aiReply }), };
+  } catch (error) {
+    console.error("Error in function execution:", error);
+    return { 
+        statusCode: 500, 
+        body: JSON.stringify({ error: "AI service is currently unavailable.", details: error.message }) 
+    };
+  }
 };
