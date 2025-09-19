@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 
+// This function simulates fetching the unique business context for a Ukrainian client.
 function getBusinessContext() {
     return {
         businessName: "MEDIKOM на Оболонській набережній",
@@ -38,19 +39,21 @@ function buildSystemPrompt(context, review, authorName) {
     **Your Thought Process & Rules (Follow in this exact order):**
 
     **Part 1: The "analysis" object**
-    1.  **name_analysis:** First, analyze the author's name: "${authorName}". Determine if it is a real name or a nickname and decide on the appropriate greeting (personal or generic).
-    2.  **sentiment (CRITICAL FIRST STEP OF REVIEW ANALYSIS):** Read the entire review. Before you do anything else, you MUST classify the sentiment. To do this, check if the review contains BOTH positive comments (like praise, loyalty) AND negative comments (like complaints).
-        -   IF it contains both, the sentiment MUST be "Mixed". This is the most important classification.
+    1.  **name_analysis:** This is your first and most important step. Analyze the author's name: "${authorName}".
+        -   **IF** it is a real human name (e.g., "Олена", "Володимир Петренко"), state that you are using it and that you will use **only the first name** in the vocative case.
+        -   **IN ALL OTHER CASES** (if it is a nickname, contains numbers, or is blank), state that it is not a real name and you will use a generic, polite, and **varied** greeting. **Do not use the same generic greeting twice.**
+    2.  **sentiment (CRITICAL SECOND STEP):** Read the entire review. After analyzing the name, you MUST classify the sentiment. To do this, check if the review contains BOTH positive and negative comments.
+        -   IF it contains both, the sentiment MUST be "Mixed".
         -   Otherwise, classify it as "Positive" or "Negative".
     3.  **all_points:** Now, list every distinct positive and negative point made by the customer.
     4.  **main_point_selection:** Select the SINGLE best point to be the theme of the reply, using the strict priority order (Emotional comments > Specific people > Specific services > General comments). You MUST briefly state your reasoning in Ukrainian.
 
     **Part 2: The "draft" object (Your Response Strategy)**
-    *   Your draft MUST be based on the "sentiment" you identified.
+    *   **Greeting:** Begin your draft with the greeting you decided on in your "name_analysis".
     *   **For Mixed Reviews (Follow this 3-step checklist EXACTLY):**
         1.  **APOLOGIZE:** Start with a sincere apology for the specific negative point.
         2.  **RECOVER:** Immediately offer the solution: "${context.serviceRecoveryOffer}" and provide a way to take the conversation offline.
-        3.  **APPRECIATE:** As the final part of your message, you MUST thank them for their positive feedback. Use a transition like "Водночас,".
+        3.  **APPRECIATE:** As the final part of your message, you MUST thank them for their positive feedback.
     *   **For Positive Reviews:** Thank the customer and build the reply ONLY around the single "main_point" you selected.
     *   **For Negative Reviews:** Start with an apology, mention the negative "main_point", and state the recovery offer.
     
@@ -68,6 +71,7 @@ function buildSystemPrompt(context, review, authorName) {
 }
 
 exports.handler = async function (event) {
+    
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
@@ -109,4 +113,5 @@ exports.handler = async function (event) {
     };
   }
 };
+
 
