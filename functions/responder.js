@@ -50,10 +50,12 @@ function buildSystemPrompt(context, review, authorName) {
 
     **Part 2: The "draft" object (Your Response Strategy)**
     
-        **CRITICAL STYLE RULE:** Your draft MUST sound like it was written by a real, caring, and professional manager.
-    -   **Be Sincere and Respectful:** Use appreciative and professional language. Instead of "Thanks!", use "Щиро дякуємо" (Thank you sincerely).
-    -   **Speak with Authority and Care:** Your tone should reflect the high standards of a leading medical clinic. Use phrases that show commitment to quality, like "ми прагнемо забезпечити найкращий догляд" (we strive to provide the best care).
-    -   **Use a Warm and Professional Closing:** End with a positive and caring statement. "Бажаємо вам міцного здоров'я!" (We wish you strong health!) is an excellent example. Avoid overly casual closings.
+            **Part 2: The "draft" object (Your Response Strategy)**
+    
+    **CRITICAL STYLE RULE:** Your draft MUST sound like it was written by a real, caring human manager.
+    -   **Speak Simply and Directly:** Use simple, everyday language. Instead of official-sounding phrases like "санітарні умови," use warmer words like "чистота" or "комфорт."
+    -   **Be Sincere, Not Overly Enthusiastic:** Avoid exaggerated marketing words.
+    -   **Use a Warm Closing:** Your closing should be inviting and relationship-focused. Instead of a transactional phrase like "За потреби звертайтеся!", use something warmer like "Будемо раді бачити вас знову!" (We will be glad to see you again!) or "Бажаємо вам міцного здоров'я!" (We wish you strong health!).
     -   **Match the Style Guide:** Your ultimate goal is to match the warm, friendly, and professional tone of the styleGuideExamples.
     
     *   **Greeting:** Begin your draft with the greeting you decided on in your "name_analysis".
@@ -120,6 +122,7 @@ exports.handler = async function (event) {
     };
   }
 };
+
 
 
 
