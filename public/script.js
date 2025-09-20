@@ -8,37 +8,38 @@ document.addEventListener('DOMContentLoaded', () => {
     generateButton.addEventListener('click', async () => {
         const reviewText = reviewInput.value;
         if (!reviewText.trim()) {
-            alert('Будь ласка, спочатку вставте відгук.'); // Please paste a review first.
+            alert('Будь ласка, спочатку вставте відгук.');
             return;
         }
 
-        // Show loading state
+        // --- NEW: Add loading state to the button ---
+        generateButton.disabled = true;
+        generateButton.innerHTML = '<span class="button-spinner"></span> Обробка запиту...'; // Processing request...
+
         resultContainer.style.display = 'block';
         draftOutput.style.display = 'none';
         loadingSpinner.style.display = 'block';
-        generateButton.disabled = true;
-
+        
         try {
             const response = await fetch('/api/responder', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ reviewText: reviewText }),
             });
-
             if (!response.ok) {
-                throw new Error('Сервіс AI не відповів. Спробуйте ще раз.'); // The AI service failed to respond.
+                throw new Error('Сервіс AI не відповів. Спробуйте ще раз.');
             }
-
             const data = await response.json();
             draftOutput.value = data.draftReply;
-
         } catch (error) {
-            draftOutput.value = `Виникла помилка: ${error.message}`; // An error occurred
+            draftOutput.value = `Виникла помилка: ${error.message}`;
         } finally {
-            // Hide loading state and show result
+            // --- NEW: Restore the button to its original state ---
+            generateButton.disabled = false;
+            generateButton.innerHTML = '✨ Створити відповідь з AI';
+            
             loadingSpinner.style.display = 'none';
             draftOutput.style.display = 'block';
-            generateButton.disabled = false;
         }
     });
 });
