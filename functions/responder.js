@@ -41,7 +41,7 @@ function buildSystemPrompt(context, review, authorName) {
 
     **Part 1: The "analysis" object**
     1.  **name_analysis:** This is your first and most important step. Analyze the author's name: "${authorName}".
-        -   **IF** it is a real human name (e.g., "Олена", "Володимир Петренко"), state that you are using it and that you will use **only the first name** in the vocative case.
+        -   **IF** it is a real human name, **including common short forms** (e.g., "Олена", "Володимир Петренко", "Віка"), state that you are using it and that you will use **only the first name** in the vocative case.
         -   **IN ALL OTHER CASES** (if it is a nickname, contains numbers, or is blank), state that it is not a real name and you will use a generic, polite, and **varied** greeting. **Do not use the same generic greeting twice.**
     2.  **sentiment (CRITICAL SECOND STEP):** Read the entire review. After analyzing the name, you MUST classify the sentiment. To do this, check if the review contains BOTH positive and negative comments.
         -   IF it contains both, the sentiment MUST be "Mixed".
@@ -114,6 +114,7 @@ exports.handler = async function (event) {
     };
   }
 };
+
 
 
 
