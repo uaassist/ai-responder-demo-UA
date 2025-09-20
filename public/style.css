@@ -127,3 +127,24 @@ textarea:focus { outline: none; border-color: var(--purple-accent); box-shadow: 
     .nav-cta { padding: 8px 12px; font-size: 0.9em; }
     .blob { width: 250px; height: 250px; filter: blur(100px); }
 }
+/* --- NEW: Button Spinner for Loading State --- */
+.button-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+/* Make sure the main spinner keyframes are defined */
+@keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+}
