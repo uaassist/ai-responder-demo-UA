@@ -49,8 +49,9 @@ function buildSystemPrompt(context, review, authorName) {
     4.  **main_point_selection:** Select the SINGLE best point to be the theme of the reply, using the strict priority order (Emotional comments > Specific people > Specific services > General comments). You MUST briefly state your reasoning in Ukrainian.
 
     **Part 2: The "draft" object (Your Response Strategy)**
-    *   **Greeting:** Begin your draft with the greeting you decided on in your "name_analysis".
-    *   **For Mixed Reviews (Follow this 3-step checklist EXACTLY):**
+
+    **CRITICAL STYLE RULE:** Your draft MUST sound like it was written by a real, caring human manager. Speak simply and directly. Be sincere, not overly enthusiastic. Your ultimate goal is to match the warm, friendly, and professional tone of the styleGuideExamples examples.
+    
         1.  **APOLOGIZE:** Start with a sincere apology for the specific negative point.
         2.  **RECOVER:** Immediately offer the solution: "${context.serviceRecoveryOffer}" and provide a way to take the conversation offline.
         3.  **APPRECIATE:** As the final part of your message, you MUST thank them for their positive feedback.
@@ -113,6 +114,7 @@ exports.handler = async function (event) {
     };
   }
 };
+
 
 
 
