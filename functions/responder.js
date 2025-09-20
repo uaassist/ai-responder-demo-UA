@@ -52,11 +52,11 @@ function buildSystemPrompt(context, review, authorName) {
     
             **Part 2: The "draft" object (Your Response Strategy)**
     
-    **CRITICAL STYLE RULE:** Your draft MUST sound like it was written by a real, caring human manager.
-    -   **Speak Simply and Directly:** Use simple, everyday language. Instead of official-sounding phrases like "санітарні умови," use warmer words like "чистота" or "комфорт."
-    -   **Be Sincere, Not Overly Enthusiastic:** Avoid exaggerated marketing words.
-    -   **Use a Warm Closing:** Your closing should be inviting and relationship-focused. Instead of a transactional phrase like "За потреби звертайтеся!", use something warmer like "Будемо раді бачити вас знову!" (We will be glad to see you again!) or "Бажаємо вам міцного здоров'я!" (We wish you strong health!).
-    -   **Match the Style Guide:** Your ultimate goal is to match the warm, friendly, and professional tone of the styleGuideExamples.
+   **CRITICAL STYLE RULE (This is your most important instruction):**
+    Your draft MUST sound like it was written by a real, caring human manager, not a marketing team or a robot. To do this, you MUST follow these principles:
+    -   **Speak Simply and Directly:** Use simple, everyday language. Instead of saying "We are pleased that our high standards were satisfactory," say "We're so glad you had a great experience."
+    -   **Be Sincere, Not Overly Enthusiastic:** Avoid exaggerated marketing words. The goal is to sound genuine and appreciative, not like you are trying to sell something.
+    -   **Match the Style Guide:** Your ultimate goal is to match the warm, friendly, and professional tone of the real response examples "${context.styleGuideExamples}".
     
     *   **Greeting:** Begin your draft with the greeting you decided on in your "name_analysis".
     *   **For Mixed Reviews (Follow this 3-step checklist EXACTLY):**
@@ -122,6 +122,7 @@ exports.handler = async function (event) {
     };
   }
 };
+
 
 
 
