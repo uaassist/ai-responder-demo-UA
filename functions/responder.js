@@ -10,8 +10,9 @@ function getBusinessContext() {
             "Добрий день, пані Лідіє! Щиро дякуємо за Ваш відгук та високу оцінку стаціонара на Оболонській набережній. Нам дуже приємно знати, що Ви залишилися задоволені візитом.Бажаємо Вам міцного здоров’я та гарного настрою! Завжди раді бачити Вас у MEDIKOM на Оболонській набережній.",
             "Владиславе, дякуємо вам за довіру і зворотній зв'язок! Костянтин Едуардович - наш провідний фахівець в оперативній урології. Пишаємось своєю командою і радіємо, коли можемо допомогти нашим пацієнтам!"
         ],
-        avoidWords: ["ми в захваті", "дякуємо, що знайшли час", "Це чудово", "Це велике задоволення", "високих стандартів медичного обслуговування", "для забезпечення вашого здоров’я"],
-        serviceRecoveryOffer: "Ваше звернення передано Заступнику медичного директора з питань якості."
+        // REINSTATED: The crucial list of words and phrases to avoid.
+        avoidWords: ["неймовірно", "дивовижно", "ми в захваті", "дякуємо, що знайшли час", "високі стандарти", "велика мотивація", "найвищий рівень"],
+        serviceRecoveryOffer: "Ваше звернення передано Заступнику медичного директора з якості."
     };
 }
 
@@ -39,25 +40,12 @@ function buildSystemPrompt(context, review, authorName) {
     **Your Thought Process & Rules (Follow in this exact order):**
 
     **Part 1: The "analysis" object**
-    1.  **name_analysis:** This is your first and most important step. Analyze the author's name: "${authorName}".
-        -   **IF** it is a real human name (e.g., "Олена", "Володимир Петренко"), state that you are using it and that you will use **only the first name** in the vocative case.
-        -   **IN ALL OTHER CASES** (if it is a nickname, contains numbers, or is blank), state that it is not a real name and you will use a generic, polite, and **varied** greeting. **Do not use the same generic greeting twice.**
-    2.  **sentiment (CRITICAL SECOND STEP):** Read the entire review. After analyzing the name, you MUST classify the sentiment. To do this, check if the review contains BOTH positive and negative comments.
-        -   IF it contains both, the sentiment MUST be "Mixed".
-        -   Otherwise, classify it as "Positive" or "Negative".
-    3.  **all_points:** Now, list every distinct positive and negative point made by the customer.
-    4.  **main_point_selection:** Select the SINGLE best point to be the theme of the reply, using the strict priority order (Emotional comments > Specific people > Specific services > General comments). You MUST briefly state your reasoning in Ukrainian.
+    1.  **name_analysis:** First, analyze the author's name: "${authorName}". Determine if it is a real name or a nickname and decide on the appropriate greeting.
+    2.  **sentiment (CRITICAL SECOND STEP):** Read the entire review. You MUST classify the sentiment as "Mixed" if it contains BOTH positive and negative comments.
+    3.  **all_points:** Now, list every distinct point made by the customer.
+    4.  **main_point_selection:** Select the SINGLE best point to be the theme of the reply, using the strict priority order (Emotional comments > Specific people > Specific services > General comments).
 
     **Part 2: The "draft" object (Your Response Strategy)**
-    
-            **Part 2: The "draft" object (Your Response Strategy)**
-    
-   **CRITICAL STYLE RULE (This is your most important instruction):**
-    Your draft MUST sound like it was written by a real, caring human manager, not a marketing team or a robot. To do this, you MUST follow these principles:
-    -   **Speak Simply and Directly:** Use simple, everyday language. Instead of saying "We are pleased that our high standards were satisfactory," say "We're so glad you had a great experience."
-    -   **Be Sincere, Not Overly Enthusiastic:** Avoid exaggerated marketing words. The goal is to sound genuine and appreciative, not like you are trying to sell something.
-    -   **Match the Style Guide:** Your ultimate goal is to match the warm, friendly, and professional tone of the real response examples "${context.styleGuideExamples}".
-    
     *   **Greeting:** Begin your draft with the greeting you decided on in your "name_analysis".
     *   **For Mixed Reviews (Follow this 3-step checklist EXACTLY):**
         1.  **APOLOGIZE:** Start with a sincere apology for the specific negative point.
@@ -67,7 +55,8 @@ function buildSystemPrompt(context, review, authorName) {
     *   **For Negative Reviews:** Start with an apology, mention the negative "main_point", and state the recovery offer.
     
     **General Rules for the Draft:**
-    -   **Style:** The tone must be friendly and match the provided examples. You MUST avoid the words from the "avoid words" list.
+    -   **Style:** The tone must be friendly and match the provided examples.
+    -   **CRITICAL - WORDS TO AVOID:** You MUST avoid the words and phrases from the "Words to Avoid" list.
     -   **Sign-off:** You MUST sign off with: "- ${context.responderName}".
 
     **Context for the Task:**
@@ -122,6 +111,7 @@ exports.handler = async function (event) {
     };
   }
 };
+
 
 
 
