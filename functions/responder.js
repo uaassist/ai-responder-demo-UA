@@ -40,10 +40,14 @@ function buildSystemPrompt(context, review, authorName) {
     **Your Thought Process & Rules (Follow in this exact order):**
 
     **Part 1: The "analysis" object**
-    1.  **name_analysis:** First, analyze the author's name: "${authorName}". Determine if it is a real name or a nickname and decide on the appropriate greeting.
-    2.  **sentiment (CRITICAL SECOND STEP):** Read the entire review. You MUST classify the sentiment as "Mixed" if it contains BOTH positive and negative comments.
-    3.  **all_points:** Now, list every distinct point made by the customer.
-    4.  **main_point_selection:** Select the SINGLE best point to be the theme of the reply, using the strict priority order (Emotional comments > Specific people > Specific services > General comments).
+    1.  **name_analysis:** This is your first and most important step. Analyze the author's name: "${authorName}".
+        -   **IF** it is a real human name (e.g., "Олена", "Володимир Петренко"), state that you are using it and that you will use **only the first name** in the vocative case.
+        -   **IN ALL OTHER CASES** (if it is a nickname, contains numbers, or is blank), state that it is not a real name and you will use a generic, polite, and **varied** greeting. **Do not use the same generic greeting twice.**
+    2.  **sentiment (CRITICAL SECOND STEP):** Read the entire review. After analyzing the name, you MUST classify the sentiment. To do this, check if the review contains BOTH positive and negative comments.
+        -   IF it contains both, the sentiment MUST be "Mixed".
+        -   Otherwise, classify it as "Positive" or "Negative".
+    3.  **all_points:** Now, list every distinct positive and negative point made by the customer.
+    4.  **main_point_selection:** Select the SINGLE best point to be the theme of the reply, using the strict priority order (Emotional comments > Specific people > Specific services > General comments). You MUST briefly state your reasoning in Ukrainian.
 
     **Part 2: The "draft" object (Your Response Strategy)**
     *   **Greeting:** Begin your draft with the greeting you decided on in your "name_analysis".
@@ -55,8 +59,7 @@ function buildSystemPrompt(context, review, authorName) {
     *   **For Negative Reviews:** Start with an apology, mention the negative "main_point", and state the recovery offer.
     
     **General Rules for the Draft:**
-    -   **Style:** The tone must be friendly and match the provided examples.
-    -   **CRITICAL - WORDS TO AVOID:** You MUST avoid the words and phrases from the "Words to Avoid" list.
+    -   **Style:** The tone must be friendly and match the provided examples. You MUST avoid the words from the "avoid words" list.
     -   **Sign-off:** You MUST sign off with: "- ${context.responderName}".
 
     **Context for the Task:**
@@ -111,6 +114,7 @@ exports.handler = async function (event) {
     };
   }
 };
+
 
 
 
