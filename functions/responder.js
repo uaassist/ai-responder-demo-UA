@@ -12,7 +12,7 @@ function getBusinessContext() {
         ],
         // REINSTATED: The crucial list of words and phrases to avoid.
         avoidWords: ["неймовірно", "дивовижно", "ми в захваті", "дякуємо, що знайшли час", "високі стандарти", "велика мотивація", "найвищий рівень"],
-        serviceRecoveryOffer: "Ваше звернення передано Заступнику медичного директора з якості."
+        serviceRecoveryOffer: "Ваше звернення передано Заступнику медичного директора з питань якості."
     };
 }
 
@@ -114,6 +114,7 @@ exports.handler = async function (event) {
     };
   }
 };
+
 
 
 
