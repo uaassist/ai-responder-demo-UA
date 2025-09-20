@@ -135,7 +135,7 @@ textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 
 
 /* --- Mobile Responsive Styles --- */
 @media (max-width: 768px) {
-    body { padding-top: 10px; } /* Adjust padding for smaller nav */
+    body { padding-top: 0px; } /* Adjust padding for smaller nav */
     h1 { font-size: 2.2em; }
     h2 { font-size: 1.8em; }
     .card, .feature-section, .cta-footer { padding: 25px; }
@@ -149,6 +149,7 @@ textarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 
     .nav-links { display: none; } /* Hide text links on mobile */
     .nav-cta { padding: 8px 12px; font-size: 0.9em; }
 }
+
 
 
 
