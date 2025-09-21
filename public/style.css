@@ -67,12 +67,15 @@ p { font-size: 1.1em; }
 .step-number { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background-image: var(--primary-gradient); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2em; font-weight: 700; margin-right: 20px; box-shadow: 0 0 15px rgba(147, 51, 234, 0.4); }
 .step-content p { margin: 0; font-size: 1em; }
 
-/* --- NEW: Case Study Section --- */
+/* --- NEW: Case Study Section Styling --- */
 .case-study-section { padding: 50px 0; }
-.case-study-container { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
+.case-study-section h2 { text-align: center; margin-bottom: 40px; }
+.case-study-main-review { max-width: 80%; margin: 0 auto 30px auto; text-align: center; }
+.case-study-main-review h3 { font-size: 1.1em; margin-bottom: 15px; }
+.case-study-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
 .case-column h3 { font-size: 1.1em; margin-bottom: 15px; text-align: center; }
-.review-card, .response-card { padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 0.95em; line-height: 1.7; background: var(--card-background); }
-.response-card { margin-bottom: 20px; }
+.review-card, .response-card { padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 0.95em; line-height: 1.7; background: var(--card-background); height: 100%; box-sizing: border-box; }
+.response-card { margin-bottom: 0; }
 .verdict-tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 500; margin-top: 15px; }
 .verdict-tag.error { background-color: var(--error-bg-color); color: var(--error-text-color); }
 .verdict-tag.success { background-color: var(--success-bg-color); color: var(--success-text-color); }
@@ -100,7 +103,7 @@ textarea:focus { outline: none; border-color: var(--purple-accent); box-shadow: 
     h1 { font-size: 2.2em; }
     h2 { font-size: 1.8em; }
     .card { padding: 25px; }
-    .strategic-benefits, .key-results, .seo-benefits, .case-study-container { flex-direction: column; gap: 20px; }
+    .strategic-benefits, .key-results, .seo-benefits, .case-study-comparison { flex-direction: column; gap: 20px; grid-template-columns: 1fr; }
     .main-nav { padding: 0 15px; }
     .nav-content { height: 60px; }
     .nav-links { display: none; }
