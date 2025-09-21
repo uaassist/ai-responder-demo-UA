@@ -79,6 +79,31 @@ p { font-size: 1.1em; }
 .verdict-tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 500; margin-top: 15px; }
 .verdict-tag.error { background-color: var(--error-bg-color); color: var(--error-text-color); }
 .verdict-tag.success { background-color: var(--success-bg-color); color: var(--success-text-color); }
+/* --- NEW: Detailed Verdict Analysis Styling --- */
+.verdict-analysis.error {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(248, 113, 113, 0.2);
+}
+.verdict-analysis h4 {
+    margin: 0 0 10px 0;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--error-text-color);
+}
+.verdict-analysis ul {
+    margin: 0;
+    padding-left: 20px;
+    list-style: none;
+}
+.verdict-analysis ul li {
+    font-size: 0.85em;
+    color: var(--text-dark-secondary);
+    margin-bottom: 8px;
+}
+.verdict-analysis ul li:last-child {
+    margin-bottom: 0;
+}
 
 /* --- Interactive Demo & Footer --- */
 .interactive-demo { border: 1px solid var(--border-color); }
@@ -110,3 +135,4 @@ textarea:focus { outline: none; border-color: var(--purple-accent); box-shadow: 
     .nav-cta { padding: 8px 12px; font-size: 0.9em; }
     .blob { width: 250px; height: 250px; filter: blur(100px); }
 }
+
