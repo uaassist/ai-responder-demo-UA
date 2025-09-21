@@ -124,7 +124,7 @@ textarea:focus { outline: none; border-color: var(--purple-accent); box-shadow: 
 #loading-spinner, .button-spinner { /* ... same as before ... */ }
 @keyframes spin { /* ... same as before ... */ }
 @media (max-width: 768px) {
-    body { padding-top: 60px; }
+    body { padding-top: 0px; }
     h1 { font-size: 2.2em; }
     h2 { font-size: 1.8em; }
     .card { padding: 25px; }
@@ -135,4 +135,5 @@ textarea:focus { outline: none; border-color: var(--purple-accent); box-shadow: 
     .nav-cta { padding: 8px 12px; font-size: 0.9em; }
     .blob { width: 250px; height: 250px; filter: blur(100px); }
 }
+
 
