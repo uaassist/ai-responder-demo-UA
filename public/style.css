@@ -19,13 +19,40 @@
 }
 
 html { scroll-behavior: smooth; }
-body { font-family: 'Inter', sans-serif; background-color: var(--background-dark); margin: 0; padding: 0; color: var(--text-dark-secondary); line-height: 1.6; padding-top: 80px; position: relative; overflow-x: hidden; }
 
-/* --- Background Blobs & Gradient Text --- */
-.blob { position: fixed; width: 500px; height: 500px; border-radius: 50%; filter: blur(200px); opacity: 0.25; z-index: -1; }
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-dark);
+    margin: 0;
+    padding: 0;
+    color: var(--text-dark-secondary);
+    line-height: 1.6;
+    padding-top: 80px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* --- Background Gradient Blobs --- */
+.blob {
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    filter: blur(200px);
+    opacity: 0.25;
+    z-index: -1;
+}
 .blob1 { background: #9333EA; top: -200px; left: -200px; }
 .blob2 { background: #3B82F6; bottom: -200px; right: -200px; }
-.gradient-text { background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-fill-color: transparent; }
+
+/* --- Gradient Text --- */
+.gradient-text {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
 
 /* --- Navigation --- */
 .main-nav { background: rgba(17, 24, 39, 0.8); backdrop-filter: blur(10px); padding: 0 40px; border-bottom: 1px solid var(--border-color); position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; box-sizing: border-box; }
@@ -49,11 +76,13 @@ p { font-size: 1.1em; }
 .card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2); border-color: rgba(255, 255, 255, 0.2); }
 .cta-button { display: inline-block; padding: 15px 30px; font-size: 1.1em; font-weight: 700; border-radius: 8px; border: none; cursor: pointer; text-decoration: none; transition: all 0.2s; }
 
-/* --- Hero & Features --- */
+/* --- Hero Section --- */
 .hero-section { text-align: center; padding: 60px 20px; border-radius: 16px; margin-bottom: 60px; background: transparent; border: none; box-shadow: none; }
 .client-logo { max-height: 50px; margin-bottom: 30px; }
 .primary-cta { background-image: var(--primary-gradient); color: white; box-shadow: 0 4px 20px rgba(147, 51, 234, 0.4); }
 .primary-cta:hover { transform: scale(1.05); box-shadow: 0 6px 25px rgba(147, 51, 234, 0.5); }
+
+/* --- Feature Sections --- */
 .feature-section h2 { text-align: center; }
 .strategic-benefits { display: flex; gap: 30px; margin-top: 40px; }
 .benefit-item { flex: 1; text-align: center; padding: 25px; background-color: rgba(17, 24, 39, 0.5); border-radius: 12px; border: 1px solid var(--border-color); }
@@ -67,51 +96,43 @@ p { font-size: 1.1em; }
 .step-number { flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background-image: var(--primary-gradient); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2em; font-weight: 700; margin-right: 20px; box-shadow: 0 0 15px rgba(147, 51, 234, 0.4); }
 .step-content p { margin: 0; font-size: 1em; }
 
-/* --- NEW: Case Study Section Styling --- */
+/* --- Case Study Section --- */
 .case-study-section { padding: 50px 0; }
-.case-study-section h2 { text-align: center; margin-bottom: 40px; }
-.case-study-main-review { max-width: 80%; margin: 0 auto 30px auto; text-align: center; }
-.case-study-main-review h3 { font-size: 1.1em; margin-bottom: 15px; }
-.case-study-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
+.case-study-container { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: stretch; }
+.case-column { display: flex; flex-direction: column; }
 .case-column h3 { font-size: 1.1em; margin-bottom: 15px; text-align: center; }
-.review-card, .response-card { padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 0.95em; line-height: 1.7; background: var(--card-background); height: 100%; box-sizing: border-box; }
-.response-card { margin-bottom: 0; }
-.verdict-tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; font-weight: 500; margin-top: 15px; }
-.verdict-tag.error { background-color: var(--error-bg-color); color: var(--error-text-color); }
-.verdict-tag.success { background-color: var(--success-bg-color); color: var(--success-text-color); }
-/* --- NEW: Detailed Verdict Analysis Styling --- */
-.verdict-analysis.error {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid rgba(248, 113, 113, 0.2);
-}
-.verdict-analysis h4 {
-    margin: 0 0 10px 0;
-    font-size: 0.9em;
-    font-weight: 600;
-    color: var(--error-text-color);
-}
-.verdict-analysis ul {
-    margin: 0;
-    padding-left: 20px;
-    list-style: none;
-}
-.verdict-analysis ul li {
-    font-size: 0.85em;
-    color: var(--text-dark-secondary);
-    margin-bottom: 8px;
-}
-.verdict-analysis ul li:last-child {
-    margin-bottom: 0;
-}
+.case-study-main-review { max-width: 90%; margin: 0 auto 30px auto; }
+.google-review-card { background: var(--card-background); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; font-size: 0.95em; text-align: left; }
+.gr-header { display: flex; align-items: center; margin-bottom: 10px; }
+.gr-avatar { width: 40px; height: 40px; border-radius: 50%; background-color: var(--purple-accent); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2em; font-weight: 600; margin-right: 12px; }
+.gr-author-info { display: flex; flex-direction: column; }
+.gr-author-name { color: var(--text-dark-primary); font-weight: 600; }
+.gr-meta { font-size: 0.8em; color: var(--text-dark-secondary); }
+.gr-rating { margin-bottom: 10px; }
+.gr-rating .star { color: #FFD700; font-size: 1.2em; text-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+.gr-body p { font-size: 1em; line-height: 1.7; margin-bottom: 15px; }
+.gr-link { font-size: 0.8em; color: var(--purple-accent); text-decoration: none; }
+.gr-link:hover { text-decoration: underline; }
+.response-card { padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); font-size: 0.95em; line-height: 1.7; background: var(--card-background); box-sizing: border-box; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.verdict-analysis { margin-top: 20px; padding-top: 15px; }
+.verdict-analysis h4 { margin: 0 0 10px 0; font-size: 0.9em; font-weight: 600; }
+.verdict-analysis ul { margin: 0; padding-left: 0; list-style: none; }
+.verdict-analysis ul li { font-size: 0.85em; color: var(--text-dark-secondary); margin-bottom: 8px; }
+.verdict-analysis.error { border-top: 1px solid rgba(248, 113, 113, 0.2); }
+.verdict-analysis.error h4 { color: var(--error-text-color); }
+.verdict-analysis.success { border-top: 1px solid rgba(52, 211, 153, 0.2); }
+.verdict-analysis.success h4 { color: var(--success-text-color); }
 
-/* --- Interactive Demo & Footer --- */
+/* --- Interactive Demo Section --- */
 .interactive-demo { border: 1px solid var(--border-color); }
 textarea { width: 100%; height: 100px; padding: 14px; font-size: 1em; border: 1px solid #374151; border-radius: 8px; box-sizing: border-box; resize: vertical; font-family: 'Inter', sans-serif; background-color: #1F2937; color: var(--text-light); }
 textarea:focus { outline: none; border-color: var(--purple-accent); box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.2); }
 #draft-output { height: 150px; }
-#generate-button { width: 100%; font-size: 1.1em; font-weight: 700; background-image: var(--primary-gradient); padding: 15px; color: white; border: none; cursor: pointer; }
-#generate-button:hover { transform: scale(1.02); box-shadow: 0 4px 15px rgba(147, 51, 234, 0.3); }
+#generate-button { width: 100%; font-size: 1.1em; font-weight: 700; background-image: var(--primary-gradient); padding: 15px; color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+#generate-button:hover:not(:disabled) { transform: scale(1.02); box-shadow: 0 4px 15px rgba(147, 51, 234, 0.3); }
+#generate-button:disabled { background-image: none; background-color: #374151; cursor: not-allowed; }
+
+/* --- Key Results & Footer --- */
 .key-results { display: flex; gap: 20px; text-align: center; }
 .result-item { flex: 1; }
 .result-item h3 { font-size: 1.2em; }
@@ -121,19 +142,81 @@ textarea:focus { outline: none; border-color: var(--purple-accent); box-shadow: 
 .final-cta:hover { transform: scale(1.05); box-shadow: 0 6px 25px rgba(245, 158, 11, 0.5); }
 .footer-branding { margin-top: 40px; font-size: 0.9em; color: #4B5563; }
 .footer-branding strong { color: #9CA3AF; }
-#loading-spinner, .button-spinner { /* ... same as before ... */ }
-@keyframes spin { /* ... same as before ... */ }
+
+/* --- Loading Spinner --- */
+#loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--purple-accent); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* --- Three Moving Dots Animation --- */
+@keyframes blink { 0% { opacity: .2; } 20% { opacity: 1; } 100% { opacity: .2; } }
+.loading-dot { animation-name: blink; animation-duration: 1.4s; animation-iteration-count: infinite; animation-fill-mode: both; font-size: 1.5em; line-height: 1; }
+.loading-dot:nth-child(2) { animation-delay: .2s; }
+.loading-dot:nth-child(3) { animation-delay: .4s; }
+
+/* --- Mobile Responsive Styles --- */
 @media (max-width: 768px) {
-    body { padding-top: 0px; }
+    body { padding-top: 60px; }
     h1 { font-size: 2.2em; }
     h2 { font-size: 1.8em; }
     .card { padding: 25px; }
-    .strategic-benefits, .key-results, .seo-benefits, .case-study-comparison { flex-direction: column; gap: 20px; grid-template-columns: 1fr; }
+    .strategic-benefits, .key-results, .seo-benefits, .case-study-container { flex-direction: column; gap: 20px; grid-template-columns: 1fr; }
     .main-nav { padding: 0 15px; }
     .nav-content { height: 60px; }
     .nav-links { display: none; }
     .nav-cta { padding: 8px 12px; font-size: 0.9em; }
     .blob { width: 250px; height: 250px; filter: blur(100px); }
-}
+}```
 
+---
 
+### **File 2 of 2: The Final, Complete `script.js`**
+
+*   **Location:** Inside the `public` folder.
+*   **Action:** Delete everything in your current `script.js` and replace it with this code.
+
+```javascript
+document.addEventListener('DOMContentLoaded', () => {
+    const reviewInput = document.getElementById('review-input');
+    const generateButton = document.getElementById('generate-button');
+    const resultContainer = document.getElementById('result-container');
+    const draftOutput = document.getElementById('draft-output');
+    const loadingSpinner = document.getElementById('loading-spinner');
+
+    generateButton.addEventListener('click', async () => {
+        const reviewText = reviewInput.value;
+        if (!reviewText.trim()) {
+            alert('Будь ласка, спочатку вставте відгук.');
+            return;
+        }
+
+        // Add loading state to the button
+        generateButton.disabled = true;
+        generateButton.innerHTML = `Обробка запиту<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span>`; 
+
+        resultContainer.style.display = 'block';
+        draftOutput.style.display = 'none';
+        loadingSpinner.style.display = 'block';
+        
+        try {
+            const response = await fetch('/api/responder', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reviewText: reviewText }),
+            });
+            if (!response.ok) {
+                throw new Error('Сервіс AI не відповів. Спробуйте ще раз.');
+            }
+            const data = await response.json();
+            draftOutput.value = data.draftReply;
+        } catch (error) {
+            draftOutput.value = `Виникла помилка: ${error.message}`;
+        } finally {
+            // Restore the button to its original state
+            generateButton.disabled = false;
+            generateButton.innerHTML = '✨ Створити відповідь з AI';
+            
+            loadingSpinner.style.display = 'none';
+            draftOutput.style.display = 'block';
+        }
+    });
+});
