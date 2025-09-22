@@ -12,9 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // --- NEW: Add loading state to the button ---
+        // Add loading state to the button
         generateButton.disabled = true;
-        // New innerHTML for the 3-dot animation
         generateButton.innerHTML = `Обробка запиту<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span>`; 
 
         resultContainer.style.display = 'block';
@@ -35,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             draftOutput.value = `Виникла помилка: ${error.message}`;
         } finally {
-            // --- NEW: Restore the button to its original state ---
+            // Restore the button to its original state
             generateButton.disabled = false;
             generateButton.innerHTML = '✨ Створити відповідь з AI';
             
@@ -44,4 +43,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
