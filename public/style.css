@@ -150,3 +150,8 @@ textarea:focus { outline: none; border-color: var(--purple-accent); box-shadow: 
     .nav-cta { padding: 8px 12px; font-size: 0.9em; }
     .blob { width: 250px; height: 250px; filter: blur(100px); }
 }
+/* NEW: Centered Headline Style */
+.section-headline {
+    text-align: center;
+    margin-bottom: 40px; /* Add some space below the headline */
+}
