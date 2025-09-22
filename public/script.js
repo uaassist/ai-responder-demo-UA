@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- NEW: Add loading state to the button ---
         generateButton.disabled = true;
-        generateButton.innerHTML = '<span class="button-spinner"></span> Обробка запиту...'; // Processing request...
+        // New innerHTML for the 3-dot animation
+        generateButton.innerHTML = `Обробка запиту<span class="loading-dot">.</span><span class="loading-dot">.</span><span class="loading-dot">.</span>`; 
 
         resultContainer.style.display = 'block';
         draftOutput.style.display = 'none';
@@ -43,3 +44,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
