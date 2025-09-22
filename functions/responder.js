@@ -47,8 +47,12 @@ function buildSystemPrompt(context, review, authorName) {
         -   IF it contains both, the sentiment MUST be "Mixed".
         -   Otherwise, classify it as "Positive" or "Negative".
     3.  **all_points:** Now, list every distinct positive and negative point made by the customer.
-    4.  **main_point_selection:** Select the SINGLE best point to be the theme of the reply, using the strict priority order (Emotional comments > Specific people > Specific services > General comments). You MUST briefly state your reasoning in Ukrainian.
-
+    4.  **main_point_selection:** This is the most critical step. From your list of points, you MUST select the SINGLE best point to be the theme of the reply, using this strict priority order:
+        -   **Priority 1 (Highest):** Specific, emotional comments about how the service made the patient or their family (especially children) feel.
+        -   **Priority 2:** Praise or criticism for a specific person (e.g., a named doctor like "Лікар Зіброва"or "the nurse").
+        -   **Priority 3:** Comments about a specific, tangible part of the service (quality of tests, diagnosis).
+        -   **Priority 4 (Lowest):** General comments about the facility (clean, fast).
+        
     **Part 2: The "draft" object (Your Response Strategy)**
     *   **Greeting:** Begin your draft with the greeting you decided on in your "name_analysis".
     *   **For Mixed Reviews (Follow this 3-step checklist EXACTLY):**
@@ -114,6 +118,7 @@ exports.handler = async function (event) {
     };
   }
 };
+
 
 
 
