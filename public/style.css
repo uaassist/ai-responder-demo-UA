@@ -139,7 +139,7 @@ textarea:focus { outline: none; border-color: var(--purple-accent); box-shadow: 
 
 /* --- Mobile Responsive Styles --- */
 @media (max-width: 768px) {
-    body { padding-top: 60px; }
+    body { padding-top: 0px; }
     h1 { font-size: 2.2em; }
     h2 { font-size: 1.8em; }
     .card { padding: 25px; }
@@ -155,3 +155,4 @@ textarea:focus { outline: none; border-color: var(--purple-accent); box-shadow: 
     text-align: center;
     margin-bottom: 40px; /* Add some space below the headline */
 }
+
