@@ -124,7 +124,7 @@ textarea:focus { outline: none; border-color: var(--purple-accent); box-shadow: 
 .result-item h3 { font-size: 1.2em; }
 .result-item p { font-size: 0.9em; }
 .cta-footer { text-align: center; padding: 50px; background: transparent; border: none; box-shadow: none; }
-.final-cta { display: inline-block; text-decoration: none; background-image: var(--secondary-gradient); color: var(--text-dark); box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4); }
+.final-cta { display: inline-block; text-decoration: none; background-image: var(--secondary-gradient); color: #4B5563; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4); }
 .final-cta:hover { transform: scale(1.05); box-shadow: 0 6px 25px rgba(245, 158, 11, 0.5); }
 .footer-branding { margin-top: 40px; font-size: 0.9em; color: #4B5563; }
 .footer-branding strong { color: #9CA3AF; }
@@ -155,4 +155,5 @@ textarea:focus { outline: none; border-color: var(--purple-accent); box-shadow: 
     text-align: center;
     margin-bottom: 40px; /* Add some space below the headline */
 }
+
 
